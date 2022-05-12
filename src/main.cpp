@@ -40,31 +40,20 @@ void TestLHTLP(const long k, const long gamma, const long T, const long MODULUS_
 
     auto LValid_proof = scheme.GenerateLValidProof(Z_LValid, s, r);
 
-    // vector<double> time(3, 0);
-    // for (int i = 0; i < 500; i++)
-    // {
     start_time = clock();
     assert(scheme.VerifyProofOfSol(Z, sol_and_proof) == 1);
     end_time = clock();
-    // time[0] += (double)(end_time - start_time) / CLOCKS_PER_SEC;
     cout << "Time of VerifyProofOfSol for 1 \t\t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
     assert(scheme.VerifyProofOfSol(invalid_Z, invalid_Z_proof) == -1);
     end_time = clock();
-    // time[1] += (double)(end_time - start_time) / CLOCKS_PER_SEC;
     cout << "Time of VerifyProofOfSol for -1 \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
     assert(scheme.VerifyProofOfSol(Z, sol_and_invalid_proof) == 0);
     end_time = clock();
-    // time[2] += (double)(end_time - start_time) / CLOCKS_PER_SEC;
     cout << "Time of VerifyProofOfSol for 0 \t\t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
-    // }
-    // for (int i = 0; i < 3; i++)
-    // {
-    //     cout << i << " " << time[i] << endl;
-    // }
 
     start_time = clock();
     assert(scheme.VerifyLValidProof(Z_LValid, LValid_proof) == true);
@@ -155,7 +144,6 @@ void TestMHTLP(const long k, const long gamma, const long T, const long MODULUS_
     invalid_Z.v = scheme.GenerateJacobiOne();
     invalid_Z.theta = RandomBnd(scheme.n_square());
 
-    // cout << "hello" << endl;
     auto sol_and_proof = scheme.SolvePuzzleWithProof(k, gamma, Z);
     // auto sol_and_proof = scheme.QuickSolvePuzzleWithProof(Z);
     auto invalid_Z_proof = scheme.SolvePuzzleWithProof(k, gamma, invalid_Z);

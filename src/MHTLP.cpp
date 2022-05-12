@@ -329,6 +329,4 @@ int MHTLP::VerifyProofOfSol(const MPuzzle Z, const std::tuple<NTL::ZZ, NTL::ZZ, 
     return 0;
 }
 
-// MHTLP::~MHTLP()
-// {
-// }
+

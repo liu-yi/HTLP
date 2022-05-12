@@ -76,23 +76,6 @@ public:
         return T_;
     }
 
-    // virtual LPuzzle GeneratePuzzle(const NTL::ZZ &s);
-    // virtual LPuzzle GeneratePuzzle(const NTL::ZZ &s, NTL::ZZ &r);
-    // virtual NTL::ZZ SolvePuzzle(LPuzzle &Z);
-    // virtual NTL::ZZ QuickSolvePuzzle(LPuzzle &Z);
-
-    // virtual std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> GenerateLValidProof(LPuzzle &Z, NTL::ZZ &s, NTL::ZZ &r);
-    // virtual bool VerifyLValidProof(const LPuzzle &Z, const std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> &proof);
-
-    // virtual NTL::ZZ GenerateProof(const long k, const long gamma, std::vector<NTL::ZZ> &C, NTL::ZZ &l);
-    // virtual std::pair<NTL::ZZ, NTL::ZZ> QuickGenerateProof(LPuzzle &Z);
-
-    // virtual std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> SolvePuzzleWithProof(const long k, const long gamma, LPuzzle &Z);
-    // virtual std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> QuickSolvePuzzleWithProof(LPuzzle &Z);
-
-    // virtual bool VerifyProof(NTL::ZZ &u, std::pair<NTL::ZZ, NTL::ZZ> &proof);
-    // virtual int VerifyProofOfSol(LPuzzle Z, std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> &proof);
-
 };
 
 #endif
