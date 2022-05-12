@@ -255,7 +255,7 @@ int main(void)
 
     // TestLValid(k, gamma, T);
 
-    TestMCorSol(k, gamma, T);
+    // TestMCorSol(k, gamma, T);
 
     // TestMInvalid(k, gamma, T);
 

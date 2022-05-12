@@ -1,15 +1,9 @@
 CC = g++
-TARGET = HTLP
+TARGET = TestHTLP
 
-SRC = $(wildcard *.cpp src/*.cpp)/
+SRC = $(wildcard *.cpp src/*.cpp)
 FILE = $(notdir $(SRC))
 OBJ = $(patsubst %.cpp, build/%.o, $(FILE))
-
-# all:
-# 	@echo $(SRC)
-# 	@echo $(FILE)
-# 	@echo $(OBJ)
-# 	@echo "end"
 
 FLAGES = -g -O2 -std=c++2a -pthread -march=native -c
 LIB = -lntl -lssl -lcrypto -lgmp -lm
