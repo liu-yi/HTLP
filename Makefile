@@ -1,7 +1,7 @@
 CC = g++
 TARGET = HTLP
 
-SRC = $(wildcard *.cpp src/*.cpp)
+SRC = $(wildcard *.cpp src/*.cpp)/
 FILE = $(notdir $(SRC))
 OBJ = $(patsubst %.cpp, build/%.o, $(FILE))
 
