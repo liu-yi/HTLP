@@ -1,18 +1,18 @@
-#include "LHTLP.hpp"
+#include "AHTLP.hpp"
 
 #define IS_CHEET_MODE assert(cheeting_mode_);
 
-LHTLP::LHTLP(const long modulus_len, const long T, const long kappa) : HTLP(modulus_len, T, kappa)
+AHTLP::AHTLP(const long modulus_len, const long T, const long kappa) : HTLP(modulus_len, T, kappa)
 {
 }
-LHTLP::LHTLP(const NTL::ZZ &n, const NTL::ZZ &g, const NTL::ZZ &h, const long T, const long kappa) : HTLP(n, g, h, T, kappa)
+AHTLP::AHTLP(const NTL::ZZ &n, const NTL::ZZ &g, const NTL::ZZ &h, const long T, const long kappa) : HTLP(n, g, h, T, kappa)
 {
 }
-LHTLP::LHTLP(const long modulus_len, const long T, const long kappa, bool cheeting_mode) : HTLP(modulus_len, T, kappa, cheeting_mode)
+AHTLP::AHTLP(const long modulus_len, const long T, const long kappa, bool cheeting_mode) : HTLP(modulus_len, T, kappa, cheeting_mode)
 {
 }
 
-std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::GenerateLValidProof(const LPuzzle &Z, const NTL::ZZ &s, const NTL::ZZ &r)
+std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> AHTLP::GenerateAValidProof(const APuzzle &Z, const NTL::ZZ &s, const NTL::ZZ &r)
 {
     NTL::ZZ x = NTL::RandomLen_ZZ(modulus_len_ - 1 + 2 * kappa_);
     NTL::ZZ t = GenerateRandomElement();
@@ -29,7 +29,7 @@ std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::GenerateLValidProof(const 
     return {a, b, alpha, beta};
 }
 
-bool LHTLP::VerifyLValidProof(const LPuzzle &Z, const std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> &proof)
+bool AHTLP::VerifyAValidProof(const APuzzle &Z, const std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ, NTL::ZZ> &proof)
 {
     const NTL::ZZ &a = std::get<0>(proof);
     const NTL::ZZ &b = std::get<1>(proof);
@@ -49,28 +49,28 @@ bool LHTLP::VerifyLValidProof(const LPuzzle &Z, const std::tuple<NTL::ZZ, NTL::Z
     return true;
 }
 
-LPuzzle LHTLP::GeneratePuzzle(const NTL::ZZ &s)
+APuzzle AHTLP::GeneratePuzzle(const NTL::ZZ &s)
 {
     assert(s < n_ && s >= 0);
-    LPuzzle Z(n_);
+    APuzzle Z(n_);
     NTL::ZZ r = GenerateRandomExponent();
     Z.u = PowerMod(g_, r, n_);
     Z.v = PowerMod(h_, r * n_, n_square_) * (1 + s * n_) % n_square_;
     return Z;
 }
 
-LPuzzle LHTLP::GeneratePuzzle(const NTL::ZZ &s, const NTL::ZZ &r)
+APuzzle AHTLP::GeneratePuzzle(const NTL::ZZ &s, const NTL::ZZ &r)
 {
     assert(s < n_ && s >= 0);
     assert(r < n_ / 2 && r >= 0);
-    LPuzzle Z(n_);
+    APuzzle Z(n_);
     Z.u = PowerMod(g_, r, n_);
     Z.v = PowerMod(h_, r * n_, n_square_) * (1 + s * n_) % n_square_;
     return Z;
 }
 
 // return solution s, will return -1 if the puzzle is invalid
-NTL::ZZ LHTLP::QuickSolvePuzzle(const LPuzzle &Z)
+NTL::ZZ AHTLP::QuickSolvePuzzle(const APuzzle &Z)
 {
     IS_CHEET_MODE
     const NTL::ZZ &u = Z.u;
@@ -80,7 +80,7 @@ NTL::ZZ LHTLP::QuickSolvePuzzle(const LPuzzle &Z)
     return temp % n_ == NTL::ZZ(0) ? temp / n_ : NTL::ZZ(-1);
 }
 
-std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::QuickSolvePuzzleWithProof(const LPuzzle &Z)
+std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> AHTLP::QuickSolvePuzzleWithProof(const APuzzle &Z)
 {
     IS_CHEET_MODE
     const NTL::ZZ &u = Z.u;
@@ -97,7 +97,7 @@ std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::QuickSolvePuzzleWithProof(const LPu
     return {s, w, pi};
 }
 
-NTL::ZZ LHTLP::SolvePuzzle(const LPuzzle &Z)
+NTL::ZZ AHTLP::SolvePuzzle(const APuzzle &Z)
 {
     const NTL::ZZ &u = Z.u;
     const NTL::ZZ &v = Z.v;
@@ -111,7 +111,7 @@ NTL::ZZ LHTLP::SolvePuzzle(const LPuzzle &Z)
     return s;
 }
 
-std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::SolvePuzzleWithProof(const long k, const long gamma, const LPuzzle &Z)
+std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> AHTLP::SolvePuzzleWithProof(const long k, const long gamma, const APuzzle &Z)
 {
     const NTL::ZZ &u = Z.u;
     const NTL::ZZ &v = Z.v;
@@ -139,7 +139,7 @@ std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> LHTLP::SolvePuzzleWithProof(const long k, 
 }
 
 // invalid proof = 0, valid solution = 1, invalid solution = -1
-int LHTLP::VerifyProofOfSol(const LPuzzle Z, const std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> &solution_and_proof)
+int AHTLP::VerifyProofOfSol(const APuzzle Z, const std::tuple<NTL::ZZ, NTL::ZZ, NTL::ZZ> &solution_and_proof)
 {
     const NTL::ZZ &u = Z.u;
     const NTL::ZZ &v = Z.v;

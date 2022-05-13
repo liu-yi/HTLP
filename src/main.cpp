@@ -1,4 +1,4 @@
-#include "LHTLP.hpp"
+#include "AHTLP.hpp"
 #include "MHTLP.hpp"
 #include "Puzzle.hpp"
 
@@ -12,21 +12,21 @@ using namespace NTL;
 
 clock_t start_time, end_time;
 
-void TestLHTLP(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
+void TestAHTLP(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
-    cout << "Init LHTLP scheme. " << endl;
-    LHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    cout << "Init AHTLP scheme. " << endl;
+    AHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
     ZZ s_prime = scheme.GenerateRandomElement();
     ZZ r = scheme.GenerateRandomExponent(); // Generate randomness for puzzle s
-    LPuzzle Z = scheme.GeneratePuzzle(s);   // Generate a LHTLP for solution s
-    LPuzzle Z_prime = scheme.GeneratePuzzle(s_prime);
-    LPuzzle Z_LValid = scheme.GeneratePuzzle(s, r);
+    APuzzle Z = scheme.GeneratePuzzle(s);   // Generate a AHTLP for solution s
+    APuzzle Z_prime = scheme.GeneratePuzzle(s_prime);
+    APuzzle Z_AValid = scheme.GeneratePuzzle(s, r);
 
-    LPuzzle Z_add = Z + Z_prime;
+    APuzzle Z_add = Z + Z_prime;
 
-    LPuzzle invalid_Z(Z.n());
+    APuzzle invalid_Z(Z.n());
     invalid_Z.u = scheme.GenerateJacobiOne();
     invalid_Z.v = RandomBnd(scheme.n_square());
 
@@ -38,7 +38,7 @@ void TestLHTLP(const long k, const long gamma, const long T, const long MODULUS_
     auto s_add = scheme.SolvePuzzle(Z_add);
     assert((s + s_prime) % scheme.n() == s_add);
 
-    auto LValid_proof = scheme.GenerateLValidProof(Z_LValid, s, r);
+    auto AValid_proof = scheme.GenerateAValidProof(Z_AValid, s, r);
 
     start_time = clock();
     assert(scheme.VerifyProofOfSol(Z, sol_and_proof) == 1);
@@ -56,83 +56,83 @@ void TestLHTLP(const long k, const long gamma, const long T, const long MODULUS_
     cout << "Time of VerifyProofOfSol for 0 \t\t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
-    assert(scheme.VerifyLValidProof(Z_LValid, LValid_proof) == true);
+    assert(scheme.VerifyAValidProof(Z_AValid, AValid_proof) == true);
     end_time = clock();
-    cout << "Time of VerifyLValidProof \t\t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of VerifyAValidProof \t\t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 }
 
-void TestLCorSol(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
+void TestACorSol(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
-    cout << "Test LCorSol. " << endl;
-    LHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    cout << "Test ACorSol. " << endl;
+    AHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
-    LPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a LHTLP for solution s
+    APuzzle Z = scheme.GeneratePuzzle(s);  // Generate a AHTLP for solution s
 
     start_time = clock();
     auto sol_and_proof = scheme.SolvePuzzleWithProof(k, gamma, Z);
     end_time = clock();
-    cout << "Time of solving a puzzle and generating a LCorSol proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of solving a puzzle and generating a ACorSol proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
     assert(scheme.VerifyProofOfSol(Z, sol_and_proof) == 1);
     end_time = clock();
-    cout << "Time of verifying a LCorSol proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of verifying a ACorSol proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 }
 
-void TestLInvalid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
+void TestAInvalid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
-    cout << "Test LInvalid. " << endl;
-    LHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    cout << "Test AInvalid. " << endl;
+    AHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
-    LPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a LHTLP for solution s
+    APuzzle Z = scheme.GeneratePuzzle(s);  // Generate a AHTLP for solution s
 
-    LPuzzle invalid_Z(Z.n());
+    APuzzle invalid_Z(Z.n());
     invalid_Z.u = scheme.GenerateJacobiOne();
     invalid_Z.v = RandomBnd(scheme.n_square());
 
     start_time = clock();
     auto invalid_Z_proof = scheme.SolvePuzzleWithProof(k, gamma, invalid_Z);
     end_time = clock();
-    cout << "Time of solving a puzzle and generating a LInvalid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of solving a puzzle and generating a AInvalid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
     assert(scheme.VerifyProofOfSol(invalid_Z, invalid_Z_proof) == -1);
     end_time = clock();
-    cout << "Time of verifying a LInvalid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of verifying a AInvalid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 }
 
-void TestLValid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
+void TestAValid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
-    cout << "Test LValid. " << endl;
-    LHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    cout << "Test AValid. " << endl;
+    AHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement();  // Generate a random solution from Z_n
     ZZ r = scheme.GenerateRandomExponent(); // Generate randomness for puzzle s
-    LPuzzle Z_LValid = scheme.GeneratePuzzle(s, r);
+    APuzzle Z_AValid = scheme.GeneratePuzzle(s, r);
 
     start_time = clock();
-    auto LValid_proof = scheme.GenerateLValidProof(Z_LValid, s, r);
+    auto AValid_proof = scheme.GenerateAValidProof(Z_AValid, s, r);
     end_time = clock();
-    cout << "Time of generating a LValid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of generating a AValid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 
     start_time = clock();
-    assert(scheme.VerifyLValidProof(Z_LValid, LValid_proof) == true);
+    assert(scheme.VerifyAValidProof(Z_AValid, AValid_proof) == true);
     end_time = clock();
-    cout << "Time of verifying a LValid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
+    cout << "Time of verifying a AValid proof \t" << (double)(end_time - start_time) / CLOCKS_PER_SEC << endl;
 }
 
 void TestMHTLP(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
     cout << "Init MHTLP scheme. " << endl;
-    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
     ZZ s_prime = scheme.GenerateRandomElement();
     ZZ r = scheme.GenerateRandomExponent();       // Custom randomness
     ZZ r_prime = scheme.GenerateRandomExponent(); // Custom randomness
-    MPuzzle Z = scheme.GeneratePuzzle(s);         // Generate a LHTLP for solution s
+    MPuzzle Z = scheme.GeneratePuzzle(s);         // Generate a AHTLP for solution s
     MPuzzle Z_prime = scheme.GeneratePuzzle(s_prime);
     MPuzzle Z_MValid = scheme.GeneratePuzzle(s, r, r_prime);
 
@@ -167,11 +167,11 @@ void TestMHTLP(const long k, const long gamma, const long T, const long MODULUS_
 
 void TestMCorSol(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
-    cout << "Init MHTLP scheme. " << endl;
-    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    cout << "Test MCorSol. " << endl;
+    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
-    MPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a LHTLP for solution s
+    MPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a AHTLP for solution s
 
     start_time = clock();
     auto sol_and_proof = scheme.SolvePuzzleWithProof(k, gamma, Z);
@@ -187,10 +187,10 @@ void TestMCorSol(const long k, const long gamma, const long T, const long MODULU
 void TestMInvalid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
     cout << "Test MInvalid. " << endl;
-    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement(); // Generate a random solution from Z_n
-    MPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a LHTLP for solution s
+    MPuzzle Z = scheme.GeneratePuzzle(s);  // Generate a AHTLP for solution s
 
     MPuzzle invalid_Z(Z.n());
     invalid_Z.u = scheme.GenerateJacobiOne();
@@ -212,7 +212,7 @@ void TestMInvalid(const long k, const long gamma, const long T, const long MODUL
 void TestMValid(const long k, const long gamma, const long T, const long MODULUS_LEN = 2048, const long kappa = 128)
 {
     cout << "Test MValid. " << endl;
-    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init LHTLP scheme.
+    MHTLP scheme(MODULUS_LEN, T, kappa, true); // Init AHTLP scheme.
 
     ZZ s = scheme.GenerateRandomElement();        // Generate a random solution from Z_n
     ZZ r = scheme.GenerateRandomExponent();       // Custom randomness
@@ -237,19 +237,19 @@ int main(void)
     const long k = max(1, long(log2(T)) / 3);
     const long gamma = max(1, long(sqrt(T)));
 
-    // TestLCorSol(k, gamma, T);
+    TestACorSol(k, gamma, T);
 
-    // TestLInvalid(k, gamma, T);
+    TestAInvalid(k, gamma, T);
 
-    // TestLValid(k, gamma, T);
+    TestAValid(k, gamma, T);
 
-    // TestMCorSol(k, gamma, T);
+    TestMCorSol(k, gamma, T);
 
-    // TestMInvalid(k, gamma, T);
+    TestMInvalid(k, gamma, T);
 
-    // TestMValid(k, gamma, T);
+    TestMValid(k, gamma, T);
 
-    // TestLHTLP(k, gamma, T);
+    // TestAHTLP(k, gamma, T);
 
     // TestMHTLP(k, gamma, T);
 

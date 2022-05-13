@@ -2,7 +2,7 @@
 #define PUZZLE_HPP_
 
 
-class LPuzzle
+class APuzzle
 {
 private:
     NTL::ZZ n_;
@@ -10,12 +10,12 @@ private:
 public:
     NTL::ZZ u;
     NTL::ZZ v;
-    LPuzzle(const NTL::ZZ &u, const NTL::ZZ &v, const NTL::ZZ n) : n_(n)
+    APuzzle(const NTL::ZZ &u, const NTL::ZZ &v, const NTL::ZZ n) : n_(n)
     {
         this->u = u;
         this->v = v;
     }
-    LPuzzle(const NTL::ZZ n) : n_(n)
+    APuzzle(const NTL::ZZ n) : n_(n)
     {
     }
 
@@ -24,30 +24,30 @@ public:
         return n_;
     }
 
-    LPuzzle operator+(const LPuzzle &a)
+    APuzzle operator+(const APuzzle &a)
     {
         assert(n_ == a.n_);
-        LPuzzle Z(u * a.u % n_, v * a.v % (n_ * n_), n_);
+        APuzzle Z(u * a.u % n_, v * a.v % (n_ * n_), n_);
         return Z;
     }
 
-    friend LPuzzle operator+(const NTL::ZZ &a, const LPuzzle &b)
+    friend APuzzle operator+(const NTL::ZZ &a, const APuzzle &b)
     {
         NTL::ZZ c = a % b.n_;
-        LPuzzle Z(b.u, (1 + c * b.n_) * b.v % (b.n_ * b.n_), b.n_);
+        APuzzle Z(b.u, (1 + c * b.n_) * b.v % (b.n_ * b.n_), b.n_);
         return Z;
     }
 
-    friend LPuzzle operator+(long a, const LPuzzle &b)
+    friend APuzzle operator+(long a, const APuzzle &b)
     {
         NTL::ZZ c = NTL::ZZ(a) % b.n_;
-        LPuzzle Z(b.u, (1 + c * b.n_) * b.v % (b.n_ * b.n_), b.n_);
+        APuzzle Z(b.u, (1 + c * b.n_) * b.v % (b.n_ * b.n_), b.n_);
         return Z;
     }
 
-    friend LPuzzle operator*(long a, const LPuzzle &b)
+    friend APuzzle operator*(long a, const APuzzle &b)
     {
-        LPuzzle Z(PowerMod(b.u, a, b.n_), PowerMod(b.v, a, b.n_) % (b.n_ * b.n_), b.n_);
+        APuzzle Z(PowerMod(b.u, a, b.n_), PowerMod(b.v, a, b.n_) % (b.n_ * b.n_), b.n_);
         return Z;
     }
 };
